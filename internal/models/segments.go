@@ -9,6 +9,7 @@ type Segment struct {
 	Duration                    uint                    `json:"duration"`
 	CabinClass                  string                  `json:"cabinClass"`
 	Equipment                   string                  `json:"equipment"`
+	FlightID                    int64                   `json:"flightId"`
 	Flight                      Flight                  `json:"flight"`
 	Origin                      string                  `json:"origin"`
 	Destination                 string                  `json:"destination"`
@@ -24,14 +25,4 @@ type Segment struct {
 type SegmentOfferInformation struct {
 	FlightMiles uint64 `json:"flightMiles"`
 	AwardFlight bool   `json:"awardFlight"`
-}
-
-type Flight struct {
-	FlightNumber          uint     `json:"flightNumber"`
-	OperatingFlightNumber uint     `json:"operatingFlightNumber"`
-	AirlineCode           string   `json:"airlineCode"`
-	OperatingAirlineCode  string   `json:"operatingAirlineCode"`
-	StopAirports          []string `json:"stopAirports"`
-	DepartureTerminal     string   `json:"departureTerminal"`
-	ArrivalTerminal       string   `json:"arrivalTerminal"`
 }
