@@ -4,55 +4,37 @@ import "time"
 
 type Passenger struct {
 	ID                  int64           `json:"id"`
-	PassengerIndex      int64           `json:"passengerIndex"`
-	PassengerNameNumber string          `json:"passengerNameNumber"`
-	PassengerDetails    PassengerDetail `json:"passengerDetails"`
-	PassengerInfo       PassengerInfo   `json:"passengerInfo"`
-	Address             Address         `json:"address"`
+	PassengerIndex      int64           `json:"passenger_index"`
+	PassengerNameNumber string          `json:"passenger_name_number"`
+	PassengerDetails    PassengerDetail `json:"passenger_details"`
+	PassengerInfo       PassengerInfo   `json:"passenger_info"`
 	Preferences         Preference      `json:"preferences"`
-	FrequentFlyer       FrequentFlyer   `json:"frequentFlyer"`
-	DocumentInfo        DocumentInfo    `json:"documentInfo"`
+	DocumentInfo        DocumentInfo    `json:"document_info"`
 }
 
 type PassengerDetail struct {
-	FirstName string `json:"firstName"`
-	LastName  string `json:"lastName"`
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
 }
 
 type PassengerInfo struct {
-	DateOfBirth time.Time `json:"dateOfBirth"`
+	DateOfBirth time.Time `json:"date_of_birth"`
 	Gender      string    `json:"gender"`
 	Type        string    `json:"type"`
 	Emails      []string  `json:"emails"`
 	Phones      []string  `json:"phones"`
 }
 
-type Address struct {
-	Street1     string `json:"street1"`
-	Street2     string `json:"street2"`
-	Postcode    string `json:"postcode"`
-	State       string `json:"state"`
-	City        string `json:"city"`
-	Country     string `json:"country"`
-	AddressType string `json:"addressType"`
-}
-
 type Preference struct {
-	MealPreference               string   `json:"mealPreference"`
-	SeatPreference               string   `json:"seatPreference"`
-	SpecialRequests              []string `json:"specialRequests"`
-	SpecialServiceRequestRemarks []string `json:"specialServiceRequestRemarks"`
-}
-
-type FrequentFlyer struct {
-	Airline    string `json:"airline"`
-	Number     string `json:"number"`
-	TierNumber int    `json:"tierNumber"`
+	MealPreference               string   `json:"meal_preference"`
+	SeatPreference               string   `json:"seat_preference"`
+	SpecialRequests              []string `json:"special_request"`
+	SpecialServiceRequestRemarks []string `json:"special_service_request_remarks"`
 }
 
 type DocumentInfo struct {
-	IssuingCountry string `json:"issuingCountry"`
-	CountryOfBirth string `json:"countryOfBirth"`
-	DocumentType   string `json:"documentType"`
+	IssuingCountry string `json:"issuing_country"`
+	CountryOfBirth string `json:"country_of_birth"`
+	DocumentType   string `json:"document_type"`
 	Nationality    string `json:"nationality"`
 }
