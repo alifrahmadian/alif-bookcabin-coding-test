@@ -4,7 +4,6 @@ import "time"
 
 type Passenger struct {
 	ID                  int64           `json:"id"`
-	PassengerIndex      int64           `json:"passenger_index"`
 	PassengerNameNumber string          `json:"passenger_name_number"`
 	PassengerDetails    PassengerDetail `json:"passenger_details"`
 	PassengerInfo       PassengerInfo   `json:"passenger_info"`
