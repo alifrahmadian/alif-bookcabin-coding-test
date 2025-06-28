@@ -1,9 +1,11 @@
 package configs
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/alifrahmadian/alif-bookcabin-coding-test/internal/db"
+	"github.com/joho/godotenv"
 )
 
 func LoadDBConfig() *db.DBConfig {
@@ -18,4 +20,13 @@ func LoadDBConfig() *db.DBConfig {
 
 func LoadEnv() string {
 	return os.Getenv("ENV")
+}
+
+func LoadGoDotEnv() error {
+	err := godotenv.Load()
+	if err != nil {
+		return fmt.Errorf("error loading .env file")
+	}
+
+	return nil
 }
