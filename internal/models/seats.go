@@ -4,6 +4,8 @@ type Seat struct {
 	ID                     int64    `json:"id"`
 	SeatRowID              int64    `json:"seat_row_id"`
 	SeatRow                SeatRow  `json:"seat_row"`
+	SegmentID              int64    `json:"segment_id"`
+	Segment                Segment  `json:"segment"`
 	SlotCharacteristics    []string `json:"slot_characteristic"`
 	StorefrontSlotCode     string   `json:"store_front_slot_code"`
 	Available              bool     `json:"available"`
