@@ -1,0 +1,1 @@
+DROP TABLE IF EXISTS seats_itinerary_parts;

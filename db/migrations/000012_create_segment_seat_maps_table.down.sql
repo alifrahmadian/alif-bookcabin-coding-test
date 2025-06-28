@@ -1,0 +1,1 @@
+DROP TABLE IF EXISTS segment_seat_maps;
