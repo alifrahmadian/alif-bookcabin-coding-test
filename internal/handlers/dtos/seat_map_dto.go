@@ -17,5 +17,13 @@ type SegmentSeatMap struct {
 }
 
 type PassengerSeatMap struct {
-	SeatSelectionEnabledForPax bool `json:"seatSelectionEnabledForPax"`
+	SeatSelectionEnabledForPax bool      `json:"seatSelectionEnabledForPax"`
+	SeatMap                    SeatMap   `json:"seatMap"`
+	Passenger                  Passenger `json:"passenger"`
+}
+
+type SeatMap struct {
+	RowsDisabledCauses []string `json:"rowsDisabledCauses"`
+	Aircraft           string   `json:"aircraft"`
+	Cabins             []Cabin  `json:"cabins"`
 }
