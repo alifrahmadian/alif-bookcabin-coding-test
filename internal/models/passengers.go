@@ -24,6 +24,7 @@ type PassengerInfo struct {
 	Phones      []string  `json:"phones"`
 }
 
+// NOTE: Preference could have a table that refers to passenger id and segment id as well, because on every itinerary passenger can have a different preference
 type Preference struct {
 	MealPreference               string   `json:"meal_preference"`
 	SeatPreference               string   `json:"seat_preference"`
