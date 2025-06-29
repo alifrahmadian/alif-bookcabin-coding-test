@@ -3,11 +3,12 @@ package services
 import (
 	"github.com/alifrahmadian/alif-bookcabin-coding-test/internal/handlers/dtos"
 	r "github.com/alifrahmadian/alif-bookcabin-coding-test/internal/repositories"
+	"github.com/alifrahmadian/alif-bookcabin-coding-test/pkg/constants"
 	e "github.com/alifrahmadian/alif-bookcabin-coding-test/pkg/errors"
 )
 
 type SeatMapService interface {
-	GetSeatMapBySeatsItineraryPartID(id int64) ([]*dtos.SeatMapResponse, error)
+	GetSeatMapBySeatsItineraryPartID(id int64) (*dtos.SeatMapResponse, error)
 }
 
 type seatMapService struct {
@@ -49,7 +50,7 @@ func NewSeatMapService(
 	}
 }
 
-func (s *seatMapService) GetSeatMapBySeatsItineraryPartID(id int64) ([]*dtos.SeatMapResponse, error) {
+func (s *seatMapService) GetSeatMapBySeatsItineraryPartID(id int64) (*dtos.SeatMapResponse, error) {
 	isSeatsItineraryPartIDExist, err := s.SeatsItineraryPartRepo.CheckIfExist(id)
 	if err != nil {
 		return nil, err
@@ -64,10 +65,17 @@ func (s *seatMapService) GetSeatMapBySeatsItineraryPartID(id int64) ([]*dtos.Sea
 		return nil, err
 	}
 
-	var segmentDTO *dtos.Segment
-	var passengerDTO *dtos.Passenger
-	var passengerSeatMapsDTO []*dtos.PassengerSeatMap
+	var segmentDTO dtos.Segment
+	var passengerDTO dtos.Passenger
+	var seatMapDTO dtos.SeatMap
+
+	var seatsItineraryPartsDTO []dtos.SeatsItineraryPart
+	var segmentSeatMapsDTO []dtos.SegmentSeatMap
+	var passengerSeatMapsDTO []dtos.PassengerSeatMap
 	var frequentFliersDTO []*dtos.FrequentFlyer
+	var cabinsDTO []dtos.Cabin
+	var seatRowsDTO []dtos.SeatRow
+	var seatsDTO []dtos.Seat
 
 	// populate segmentSeatMaps response
 	for _, segmentSeatMap := range segmentSeatMaps {
@@ -100,7 +108,112 @@ func (s *seatMapService) GetSeatMapBySeatsItineraryPartID(id int64) ([]*dtos.Sea
 				})
 			}
 
-			passengerDTO = &dtos.Passenger{
+			seatMap, err := s.SeatMapRepo.GetSeatMapByID(passengerSeatMap.SeatMapID)
+			if err != nil {
+				return nil, err
+			}
+
+			cabins, err := s.CabinRepo.GetCabinsByAircraft(seatMap.Aircraft)
+			if err != nil {
+				return nil, err
+			}
+
+			for _, cabin := range cabins {
+				seatRows, err := s.SeatRowRepo.GetSeatRowsByCabinID(cabin.ID)
+				if err != nil {
+					return nil, err
+				}
+
+				for _, seatRow := range seatRows {
+					seats, err := s.SeatRepo.GetSeatsBySeatRowIDAndSegmentID(seatRow.ID, segment.ID)
+					if err != nil {
+						return nil, err
+					}
+
+					for _, seat := range seats {
+						if seat.StorefrontSlotCode != constants.CONST_SEAT_STOREFRONT_SLOT_CODE_SEAT {
+							seatsDTO = append(seatsDTO, dtos.Seat{
+								SlotCharacteristics: seat.SlotCharacteristics,
+								StorefrontSlotCode:  seat.StorefrontSlotCode,
+								Available:           seat.Available,
+								Entitled:            seat.Entitled,
+								FeeWaived:           seat.FeeWaived,
+								FreeOfCharge:        seat.FreeOfCharge,
+								OriginallySelected:  seat.OriginallySelected,
+							})
+						} else {
+							seatsDTO = append(seatsDTO, dtos.Seat{
+								StorefrontSlotCode:  seat.StorefrontSlotCode,
+								Available:           seat.Available,
+								Code:                seat.Code,
+								Designations:        seat.Designations,
+								Entitled:            seat.Entitled,
+								FeeWaived:           seat.FeeWaived,
+								EntitledRuleId:      seat.EntitledRuleID,
+								FeeWaivedRuleId:     seat.FeeWaiveRuleID,
+								SeatCharacteristics: seat.SeatCharacteristics,
+								Limitations:         seat.Limitations,
+								RefundIndicator:     seat.RefundIndicator,
+								FreeOfCharge:        seat.FreeOfCharge,
+								Prices: dtos.Prices{
+									Alternatives: [][]dtos.Alternative{
+										[]dtos.Alternative{
+											{
+												Amount:   seat.PriceAmount,
+												Currency: seat.PriceCurrency,
+											},
+										},
+									},
+								},
+								Taxes: dtos.Taxes{
+									Alternatives: [][]dtos.Alternative{
+										[]dtos.Alternative{
+											{
+												Amount:   seat.TaxAmount,
+												Currency: seat.TaxCurrency,
+											},
+										},
+									},
+								},
+								Total: dtos.Total{
+									Alternatives: [][]dtos.Alternative{
+										[]dtos.Alternative{
+											{
+												Amount:   seat.TotalAmount,
+												Currency: seat.TotalCurrency,
+											},
+										},
+									},
+								},
+								OriginallySelected:     seat.OriginallySelected,
+								RawSeatCharacteristics: seat.RawSeatCharacteristics,
+							})
+						}
+					}
+
+					seatRowsDTO = append(seatRowsDTO, dtos.SeatRow{
+						RowNumber: seatRow.RowNumber,
+						SeatCodes: seatRow.SeatCodes,
+						Seats:     seatsDTO,
+					})
+				}
+
+				cabinsDTO = append(cabinsDTO, dtos.Cabin{
+					Deck:        cabin.Deck,
+					SeatColumns: cabin.SeatColumns,
+					SeatRows:    seatRowsDTO,
+					FirstRow:    cabin.FirstRow,
+					LastRow:     cabin.LastRow,
+				})
+			}
+
+			seatMapDTO = dtos.SeatMap{
+				RowsDisabledCauses: seatMap.RowsDisabledCauses,
+				Aircraft:           seatMap.Aircraft,
+				Cabins:             cabinsDTO,
+			}
+
+			passengerDTO = dtos.Passenger{
 				PassengerIndex:      passenger.ID,
 				PassengerNameNumber: passenger.PassengerNameNumber,
 				PassengerDetails: dtos.PassengerDetails{
@@ -140,9 +253,15 @@ func (s *seatMapService) GetSeatMapBySeatsItineraryPartID(id int64) ([]*dtos.Sea
 				},
 			}
 
+			passengerSeatMapsDTO = append(passengerSeatMapsDTO, dtos.PassengerSeatMap{
+				SeatSelectionEnabledForPax: passengerSeatMap.SeatSelectionEnabledForPax,
+				SeatMap:                    seatMapDTO,
+				Passenger:                  passengerDTO,
+			})
+
 		}
 
-		segmentDTO = &dtos.Segment{
+		segmentDTO = dtos.Segment{
 			Type: segment.Type,
 			SegmentOfferInformation: dtos.SegmentOfferInformation{
 				FlightMiles: segment.SegmentOfferInformation.FlightMiles,
@@ -171,7 +290,20 @@ func (s *seatMapService) GetSeatMapBySeatsItineraryPartID(id int64) ([]*dtos.Sea
 			SegmentRef:                  segment.SegmentRef,
 		}
 
+		segmentSeatMapsDTO = append(segmentSeatMapsDTO, dtos.SegmentSeatMap{
+			PassengerSeatMaps: passengerSeatMapsDTO,
+			Segment:           segmentDTO,
+		})
 	}
 
-	return nil, nil
+	seatsItineraryPartsDTO = append(seatsItineraryPartsDTO, dtos.SeatsItineraryPart{
+		SegmentSeatMaps: segmentSeatMapsDTO,
+	})
+
+	seatMapResponse := &dtos.SeatMapResponse{
+		SeatsItineraryParts: seatsItineraryPartsDTO,
+		SelectedSeats:       nil,
+	}
+
+	return seatMapResponse, nil
 }

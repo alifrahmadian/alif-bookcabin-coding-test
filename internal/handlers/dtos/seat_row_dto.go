@@ -2,6 +2,6 @@ package dtos
 
 type SeatRow struct {
 	RowNumber uint     `json:"rowNumber"`
-	SearCodes []string `json:"seatCodes"`
+	SeatCodes []string `json:"seatCodes"`
 	Seats     []Seat   `json:"seats"`
 }

@@ -2,7 +2,7 @@ package dtos
 
 type Seat struct {
 	SlotCharacteristics    []string `json:"slotCharacteristics"`
-	StorefrontSlotCode     []string `json:"storefrontSlotCode"`
+	StorefrontSlotCode     string   `json:"storefrontSlotCode"`
 	Available              bool     `json:"available"`
 	Entitled               bool     `json:"entitled"`
 	FeeWaived              bool     `json:"feeWaived"`
