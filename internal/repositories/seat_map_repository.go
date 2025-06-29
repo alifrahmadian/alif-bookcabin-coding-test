@@ -4,6 +4,7 @@ import (
 	"database/sql"
 
 	"github.com/alifrahmadian/alif-bookcabin-coding-test/internal/models"
+	"github.com/lib/pq"
 )
 
 type SeatMapRepository interface {
@@ -30,7 +31,7 @@ func (r *seatMapRepository) GetSeatMapByID(id int64) (*models.SeatMap, error) {
 			rows_disabled_causes,
 			aircraft
 		FROM
-			seat_map
+			seat_maps
 		WHERE
 			id = $1
 	`
@@ -40,7 +41,7 @@ func (r *seatMapRepository) GetSeatMapByID(id int64) (*models.SeatMap, error) {
 		Scan(
 			&seatMap.ID,
 			&seatMap.SegmentID,
-			&seatMap.RowsDisabledCauses,
+			pq.Array(&seatMap.RowsDisabledCauses),
 			&seatMap.Aircraft,
 		)
 	if err != nil {
