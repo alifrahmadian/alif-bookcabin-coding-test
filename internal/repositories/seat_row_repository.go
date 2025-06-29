@@ -30,7 +30,7 @@ func (r *seatRowRepository) GetSeatRowsByCabinID(id int64) ([]*models.SeatRow, e
 			row_number,
 			seat_codes
 		FROM
-			seat_row
+			seat_rows
 		WHERE cabin_id = $1
 	`
 
