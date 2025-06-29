@@ -23,6 +23,6 @@ type Segment struct {
 }
 
 type SegmentOfferInformation struct {
-	FlightMiles uint64 `json:"flight_miles"`
-	AwardFlight bool   `json:"award_flight"`
+	FlightMiles uint `json:"flight_miles"`
+	AwardFlight bool `json:"award_flight"`
 }

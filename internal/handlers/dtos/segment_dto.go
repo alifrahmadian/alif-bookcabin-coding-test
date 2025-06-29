@@ -14,7 +14,7 @@ type Segment struct {
 	BookingClass                string                  `json:"bookingClass"`
 	LayoverDuration             uint                    `json:"layoverDuration"`
 	FareBasis                   string                  `json:"fareBasis"`
-	SubjectToGovernmentApproval string                  `json:"subjectToGovernmentApproval"`
+	SubjectToGovernmentApproval bool                    `json:"subjectToGovernmentApproval"`
 	SegmentRef                  string                  `json:"segmentRef"`
 }
 
