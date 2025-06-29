@@ -7,7 +7,7 @@ type Seat struct {
 	SegmentID              int64    `json:"segment_id"`
 	Segment                Segment  `json:"segment"`
 	SlotCharacteristics    []string `json:"slot_characteristic"`
-	StorefrontSlotCode     string   `json:"store_front_slot_code"`
+	StorefrontSlotCode     string   `json:"storefront_slot_code"`
 	Available              bool     `json:"available"`
 	Entitled               bool     `json:"entitled"`
 	FeeWaived              bool     `json:"fee_waived"`
