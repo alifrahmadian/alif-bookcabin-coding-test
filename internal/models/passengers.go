@@ -9,6 +9,7 @@ type Passenger struct {
 	PassengerInfo       PassengerInfo   `json:"passenger_info"`
 	Preferences         Preference      `json:"preferences"`
 	DocumentInfo        DocumentInfo    `json:"document_info"`
+	Address             Address         `json:"address"`
 }
 
 type PassengerDetail struct {
@@ -28,7 +29,7 @@ type PassengerInfo struct {
 type Preference struct {
 	MealPreference               string   `json:"meal_preference"`
 	SeatPreference               string   `json:"seat_preference"`
-	SpecialRequests              []string `json:"special_request"`
+	SpecialRequests              []string `json:"special_requests"`
 	SpecialServiceRequestRemarks []string `json:"special_service_request_remarks"`
 }
 
