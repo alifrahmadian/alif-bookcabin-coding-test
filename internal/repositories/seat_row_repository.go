@@ -4,6 +4,7 @@ import (
 	"database/sql"
 
 	"github.com/alifrahmadian/alif-bookcabin-coding-test/internal/models"
+	"github.com/lib/pq"
 )
 
 type SeatRowRepository interface {
@@ -32,6 +33,7 @@ func (r *seatRowRepository) GetSeatRowsByCabinID(id int64) ([]*models.SeatRow, e
 		FROM
 			seat_rows
 		WHERE cabin_id = $1
+		ORDER BY row_number ASC
 	`
 
 	rows, err := r.DB.Query(query, id)
@@ -43,9 +45,9 @@ func (r *seatRowRepository) GetSeatRowsByCabinID(id int64) ([]*models.SeatRow, e
 		seatRow := &models.SeatRow{}
 		err := rows.Scan(
 			&seatRow.ID,
-			&seatRow.Cabin.SeatColumns,
+			&seatRow.CabinID,
 			&seatRow.RowNumber,
-			&seatRow.SeatCodes,
+			pq.Array(&seatRow.SeatCodes),
 		)
 
 		if err != nil {

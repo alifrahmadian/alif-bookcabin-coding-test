@@ -38,7 +38,7 @@ func (r *seatRepository) GetSeatsBySeatRowIDAndSegmentID(seatRowID, segmentID in
 			code,
 			designations,
 			entitled_rule_id,
-			fee_wavie_rule_id,
+			fee_waive_rule_id,
 			seat_characteristics,
 			limitations,
 			refund_indicator,
@@ -48,7 +48,7 @@ func (r *seatRepository) GetSeatsBySeatRowIDAndSegmentID(seatRowID, segmentID in
 			tax_amount,
 			tax_currency,
 			total_amount,
-			total_currency,
+			total_currency
 		FROM
 			seats
 		WHERE
