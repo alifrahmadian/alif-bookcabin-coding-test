@@ -4,6 +4,7 @@ import (
 	"database/sql"
 
 	"github.com/alifrahmadian/alif-bookcabin-coding-test/internal/models"
+	"github.com/lib/pq"
 )
 
 type CabinRepository interface {
@@ -46,7 +47,7 @@ func (r *cabinRepository) GetCabinsByAircraft(aircraft string) ([]*models.Cabin,
 		err := rows.Scan(
 			&cabin.ID,
 			&cabin.Deck,
-			&cabin.SeatColumns,
+			pq.Array(&cabin.SeatColumns),
 			&cabin.FirstRow,
 			&cabin.LastRow,
 			&cabin.Aircraft,
