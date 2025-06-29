@@ -35,7 +35,7 @@ type Address struct {
 
 type Preference struct {
 	SpecialPreferences SpecialPreference `json:"specialPreferences"`
-	FrequentFlyer      []FrequentFlyer   `json:"frequentFlyer"`
+	FrequentFlyer      []*FrequentFlyer  `json:"frequentFlyer"`
 }
 
 type SpecialPreference struct {

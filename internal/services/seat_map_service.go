@@ -65,8 +65,9 @@ func (s *seatMapService) GetSeatMapBySeatsItineraryPartID(id int64) ([]*dtos.Sea
 	}
 
 	var segmentDTO *dtos.Segment
-	var passengerDTO dtos.Passenger
+	var passengerDTO *dtos.Passenger
 	var passengerSeatMapsDTO []*dtos.PassengerSeatMap
+	var frequentFliersDTO []*dtos.FrequentFlyer
 
 	// populate segmentSeatMaps response
 	for _, segmentSeatMap := range segmentSeatMaps {
@@ -86,7 +87,58 @@ func (s *seatMapService) GetSeatMapBySeatsItineraryPartID(id int64) ([]*dtos.Sea
 				return nil, err
 			}
 
-			passengerDTO = &dtos.Passenger{}
+			frequentFliers, err := s.FrequentFlyerRepo.GetFrequentFliersByPassengerID(passenger.ID)
+			if err != nil {
+				return nil, err
+			}
+
+			for _, frequentFlyer := range frequentFliers {
+				frequentFliersDTO = append(frequentFliersDTO, &dtos.FrequentFlyer{
+					Airline:    frequentFlyer.Airline,
+					Number:     frequentFlyer.Number,
+					TierNumber: uint(frequentFlyer.TierNumber),
+				})
+			}
+
+			passengerDTO = &dtos.Passenger{
+				PassengerIndex:      passenger.ID,
+				PassengerNameNumber: passenger.PassengerNameNumber,
+				PassengerDetails: dtos.PassengerDetails{
+					FirstName: passenger.PassengerDetails.FirstName,
+					LastName:  passenger.PassengerDetails.LastName,
+				},
+				PassengerInfo: dtos.PassengerInfo{
+					DateOfBirth: passenger.PassengerInfo.DateOfBirth.Format("2006-01-02"),
+					Gender:      passenger.PassengerInfo.Gender,
+					Type:        passenger.PassengerInfo.Type,
+					Emails:      passenger.PassengerInfo.Emails,
+					Phones:      passenger.PassengerInfo.Phones,
+					Address: dtos.Address{
+						Street1:     passenger.Address.Street1,
+						Street2:     passenger.Address.Street2,
+						Postcode:    passenger.Address.Postcode,
+						State:       passenger.Address.State,
+						City:        passenger.Address.City,
+						Country:     passenger.Address.Country,
+						AddressType: passenger.Address.AddressType,
+					},
+				},
+				Preferences: dtos.Preference{
+					SpecialPreferences: dtos.SpecialPreference{
+						MealPreference:               passenger.Preferences.MealPreference,
+						SeatPreference:               passenger.Preferences.SeatPreference,
+						SpecialRequests:              passenger.Preferences.SpecialRequests,
+						SpecialServiceRequestRemarks: passenger.Preferences.SpecialServiceRequestRemarks,
+					},
+					FrequentFlyer: frequentFliersDTO,
+				},
+				DocumentInfo: dtos.DocumentInfo{
+					IssuingCountry: passenger.DocumentInfo.IssuingCountry,
+					CountryOfBirth: passenger.DocumentInfo.CountryOfBirth,
+					DocumentType:   passenger.DocumentInfo.DocumentType,
+					Nationality:    passenger.DocumentInfo.Nationality,
+				},
+			}
 
 		}
 
