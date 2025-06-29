@@ -4,6 +4,7 @@ import (
 	"database/sql"
 
 	"github.com/alifrahmadian/alif-bookcabin-coding-test/internal/models"
+	"github.com/lib/pq"
 )
 
 type PassengerRepository interface {
@@ -67,12 +68,12 @@ func (r *passengerRepository) GetPassengerByID(id int64) (*models.Passenger, err
 			&passenger.PassengerInfo.DateOfBirth,
 			&passenger.PassengerInfo.Gender,
 			&passenger.PassengerInfo.Type,
-			&passenger.PassengerInfo.Emails,
-			&passenger.PassengerInfo.Phones,
+			pq.Array(&passenger.PassengerInfo.Emails),
+			pq.Array(&passenger.PassengerInfo.Phones),
 			&passenger.Preferences.MealPreference,
 			&passenger.Preferences.SeatPreference,
-			&passenger.Preferences.SpecialRequests,
-			&passenger.Preferences.SpecialServiceRequestRemarks,
+			pq.Array(&passenger.Preferences.SpecialRequests),
+			pq.Array(&passenger.Preferences.SpecialServiceRequestRemarks),
 			&passenger.DocumentInfo.IssuingCountry,
 			&passenger.DocumentInfo.CountryOfBirth,
 			&passenger.DocumentInfo.DocumentType,
