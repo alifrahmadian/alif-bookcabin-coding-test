@@ -7,7 +7,7 @@ type Segment struct {
 	CabinClass                  string                  `json:"cabinClass"`
 	Equipment                   string                  `json:"equipment"`
 	Flight                      Flight                  `json:"flight"`
-	Origin                      string                  `json:"string"`
+	Origin                      string                  `json:"origin"`
 	Destination                 string                  `json:"destination"`
 	Departure                   string                  `json:"departure"`
 	Arrival                     string                  `json:"arrival"`
