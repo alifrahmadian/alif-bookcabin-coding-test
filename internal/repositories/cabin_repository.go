@@ -58,5 +58,10 @@ func (r *cabinRepository) GetCabinsByAircraft(aircraft string) ([]*models.Cabin,
 		cabins = append(cabins, cabin)
 	}
 
+	err = rows.Err()
+	if err != nil {
+		return nil, err
+	}
+
 	return cabins, nil
 }

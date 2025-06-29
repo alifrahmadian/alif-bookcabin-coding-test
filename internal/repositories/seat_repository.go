@@ -96,5 +96,10 @@ func (r *seatRepository) GetSeatsBySeatRowIDAndSegmentID(seatRowID, segmentID in
 		seats = append(seats, seat)
 	}
 
+	err = rows.Err()
+	if err != nil {
+		return nil, err
+	}
+
 	return seats, nil
 }

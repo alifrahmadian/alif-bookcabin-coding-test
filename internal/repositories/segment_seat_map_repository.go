@@ -54,5 +54,10 @@ func (r *segmentSeatMapRepository) GetSegmentSeatMapsBySeatsItineraryPartID(id i
 		segmentSeatMaps = append(segmentSeatMaps, segmentSeatMap)
 	}
 
+	err = rows.Err()
+	if err != nil {
+		return nil, err
+	}
+
 	return segmentSeatMaps, nil
 }

@@ -56,5 +56,11 @@ func (r *passengerSeatMapRepository) GetPassengerSeatMapsBySegmentSeatMapID(id i
 
 		passengerSeatMaps = append(passengerSeatMaps, passengerSeatMap)
 	}
+
+	err = rows.Err()
+	if err != nil {
+		return nil, err
+	}
+
 	return passengerSeatMaps, nil
 }

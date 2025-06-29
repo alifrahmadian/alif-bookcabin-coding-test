@@ -55,5 +55,10 @@ func (r *seatRowRepository) GetSeatRowsByCabinID(id int64) ([]*models.SeatRow, e
 		seatRows = append(seatRows, seatRow)
 	}
 
+	err = rows.Err()
+	if err != nil {
+		return nil, err
+	}
+
 	return seatRows, nil
 }
