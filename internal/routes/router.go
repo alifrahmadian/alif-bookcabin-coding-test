@@ -5,4 +5,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetupRoutes(router *gin.Engine, handlers *configs.Handler) {}
+func SetupRoutes(router *gin.Engine, handlers *configs.Handler) {
+	router.GET("/seat-map/seats-itinerary-part/:id", handlers.SeatMapHandler.GetSeatMap)
+}

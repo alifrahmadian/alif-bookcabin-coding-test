@@ -4,6 +4,7 @@ import (
 	"database/sql"
 
 	"github.com/alifrahmadian/alif-bookcabin-coding-test/internal/models"
+	"github.com/lib/pq"
 )
 
 type SegmentRepository interface {
@@ -72,7 +73,7 @@ func (r *segmentRepository) GetSegmentAndFlightBySegmentID(id int64) (*models.Se
 			&segment.Flight.OperatingFlightNumber,
 			&segment.Flight.AirlineCode,
 			&segment.Flight.OperatingAirlineCode,
-			&segment.Flight.StopAirports,
+			pq.Array(&segment.Flight.StopAirports),
 			&segment.Flight.DepartureTerminal,
 			&segment.Flight.ArrivalTerminal,
 			&segment.Origin,

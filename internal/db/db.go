@@ -25,5 +25,7 @@ func Connect(dbConfig DBConfig) (*sql.DB, error) {
 		return nil, err
 	}
 
+	fmt.Println("dbConn: ", dsn)
+
 	return DB, nil
 }
