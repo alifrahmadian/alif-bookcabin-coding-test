@@ -191,8 +191,8 @@ func (s *seatMapService) GetSeatMapBySeatsItineraryPartID(id int64) (*dtos.SeatM
 									Alternatives: [][]dtos.Alternative{
 										{
 											{
-												Amount:   *seat.PriceAmount,
-												Currency: *seat.PriceCurrency,
+												Amount:   float64(seat.PriceAmount.Int64),
+												Currency: seat.PriceCurrency.String,
 											},
 										},
 									},
@@ -201,8 +201,8 @@ func (s *seatMapService) GetSeatMapBySeatsItineraryPartID(id int64) (*dtos.SeatM
 									Alternatives: [][]dtos.Alternative{
 										{
 											{
-												Amount:   *seat.TaxAmount,
-												Currency: *seat.TaxCurrency,
+												Amount:   float64(seat.TaxAmount.Int64),
+												Currency: seat.TaxCurrency.String,
 											},
 										},
 									},
@@ -211,8 +211,8 @@ func (s *seatMapService) GetSeatMapBySeatsItineraryPartID(id int64) (*dtos.SeatM
 									Alternatives: [][]dtos.Alternative{
 										{
 											{
-												Amount:   *seat.TotalAmount,
-												Currency: *seat.TotalCurrency,
+												Amount:   float64(seat.TotalAmount.Int64),
+												Currency: seat.TotalCurrency.String,
 											},
 										},
 									},

@@ -6,7 +6,7 @@ type SeatMapResponse struct {
 }
 
 type SeatsItineraryPart struct {
-	SegmentSeatMaps []SegmentSeatMap `json:"segmentSeatMap"`
+	SegmentSeatMaps []SegmentSeatMap `json:"segmentSeatMaps"`
 }
 
 type SelectedSeat struct{}
