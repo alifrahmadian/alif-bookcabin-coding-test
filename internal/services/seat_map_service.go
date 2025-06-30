@@ -1,6 +1,8 @@
 package services
 
 import (
+	"strconv"
+
 	"github.com/alifrahmadian/alif-bookcabin-coding-test/internal/handlers/dtos"
 	r "github.com/alifrahmadian/alif-bookcabin-coding-test/internal/repositories"
 	"github.com/alifrahmadian/alif-bookcabin-coding-test/pkg/constants"
@@ -73,9 +75,6 @@ func (s *seatMapService) GetSeatMapBySeatsItineraryPartID(id int64) (*dtos.SeatM
 	var segmentSeatMapsDTO []dtos.SegmentSeatMap
 	var passengerSeatMapsDTO []dtos.PassengerSeatMap
 	var frequentFliersDTO []*dtos.FrequentFlyer
-	// var cabinsDTO []dtos.Cabin
-	// var seatRowsDTO []dtos.SeatRow
-	// var seatsDTO []dtos.Seat
 
 	// populate segmentSeatMaps response
 	for _, segmentSeatMap := range segmentSeatMaps {
@@ -148,17 +147,44 @@ func (s *seatMapService) GetSeatMapBySeatsItineraryPartID(id int64) (*dtos.SeatM
 								OriginallySelected:  seat.OriginallySelected,
 							})
 						} else {
+
+							designations := seat.Designations
+							if designations == nil {
+								designations = []string{}
+							}
+
+							limitations := seat.Limitations
+							if limitations == nil {
+								limitations = []string{}
+							}
+
+							var entitledRuleIdString string
+							entitledRuleId := seat.EntitledRuleID.Int64
+							if entitledRuleId == 0 {
+								entitledRuleIdString = ""
+							} else {
+								entitledRuleIdString = strconv.FormatInt(entitledRuleId, 10)
+							}
+
+							var feeWaiveRuleIdString string
+							feeWaiveRuleId := seat.FeeWaiveRuleID.Int64
+							if feeWaiveRuleId == 0 {
+								feeWaiveRuleIdString = ""
+							} else {
+								feeWaiveRuleIdString = strconv.FormatInt(feeWaiveRuleId, 10)
+							}
+
 							seatsDTO = append(seatsDTO, dtos.Seat{
 								StorefrontSlotCode:  seat.StorefrontSlotCode,
 								Available:           seat.Available,
 								Code:                *seat.Code,
-								Designations:        seat.Designations,
+								Designations:        designations,
 								Entitled:            seat.Entitled,
 								FeeWaived:           seat.FeeWaived,
-								EntitledRuleId:      *seat.EntitledRuleID,
-								FeeWaivedRuleId:     *seat.FeeWaiveRuleID,
+								EntitledRuleId:      entitledRuleIdString,
+								FeeWaivedRuleId:     feeWaiveRuleIdString,
 								SeatCharacteristics: seat.SeatCharacteristics,
-								Limitations:         seat.Limitations,
+								Limitations:         limitations,
 								RefundIndicator:     *seat.RefundIndicator,
 								FreeOfCharge:        seat.FreeOfCharge,
 								Prices: &dtos.Prices{
@@ -308,7 +334,7 @@ func (s *seatMapService) GetSeatMapBySeatsItineraryPartID(id int64) (*dtos.SeatM
 
 	seatMapResponse := &dtos.SeatMapResponse{
 		SeatsItineraryParts: seatsItineraryPartsDTO,
-		SelectedSeats:       nil,
+		SelectedSeats:       []dtos.SelectedSeat{},
 	}
 
 	return seatMapResponse, nil

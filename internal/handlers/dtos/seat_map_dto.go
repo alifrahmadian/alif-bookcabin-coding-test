@@ -2,7 +2,7 @@ package dtos
 
 type SeatMapResponse struct {
 	SeatsItineraryParts []SeatsItineraryPart `json:"seatsItineraryParts"`
-	SelectedSeats       []SelectedSeat       `json:"selected_seat"`
+	SelectedSeats       []SelectedSeat       `json:"selectedSeats"`
 }
 
 type SeatsItineraryPart struct {

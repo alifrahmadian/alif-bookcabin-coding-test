@@ -2,7 +2,7 @@ package dtos
 
 type Seat struct {
 	SlotCharacteristics    []string `json:"slotCharacteristics,omitempty"`
-	StorefrontSlotCode     string   `json:"storefrontSlotCode"`
+	StorefrontSlotCode     string   `json:"storefrontSlotCode,omitempty"`
 	Available              bool     `json:"available"`
 	Entitled               bool     `json:"entitled"`
 	FeeWaived              bool     `json:"feeWaived"`
@@ -10,8 +10,8 @@ type Seat struct {
 	OriginallySelected     bool     `json:"originallySelected"`
 	Code                   string   `json:"code,omitempty"`
 	Designations           []string `json:"designations,omitempty"`
-	EntitledRuleId         int64    `json:"entitledRuleId,omitempty"`
-	FeeWaivedRuleId        int64    `json:"feeWaivedRuleId,omitempty"`
+	EntitledRuleId         string   `json:"entitledRuleId,omitempty"`
+	FeeWaivedRuleId        string   `json:"feeWaivedRuleId,omitempty"`
 	SeatCharacteristics    []string `json:"seatCharacteristics,omitempty"`
 	Limitations            []string `json:"limitations,omitempty"`
 	RefundIndicator        string   `json:"refundIndicator,omitempty"`
@@ -34,6 +34,6 @@ type Total struct {
 }
 
 type Alternative struct {
-	Amount   float64 `json:"amount,omitempty"`
-	Currency string  `json:"currency,omitempty"`
+	Amount   float64 `json:"amount"`
+	Currency string  `json:"currency"`
 }
