@@ -73,9 +73,9 @@ func (s *seatMapService) GetSeatMapBySeatsItineraryPartID(id int64) (*dtos.SeatM
 	var segmentSeatMapsDTO []dtos.SegmentSeatMap
 	var passengerSeatMapsDTO []dtos.PassengerSeatMap
 	var frequentFliersDTO []*dtos.FrequentFlyer
-	var cabinsDTO []dtos.Cabin
-	var seatRowsDTO []dtos.SeatRow
-	var seatsDTO []dtos.Seat
+	// var cabinsDTO []dtos.Cabin
+	// var seatRowsDTO []dtos.SeatRow
+	// var seatsDTO []dtos.Seat
 
 	// populate segmentSeatMaps response
 	for _, segmentSeatMap := range segmentSeatMaps {
@@ -118,17 +118,23 @@ func (s *seatMapService) GetSeatMapBySeatsItineraryPartID(id int64) (*dtos.SeatM
 				return nil, err
 			}
 
+			var cabinsDTO []dtos.Cabin
+
 			for _, cabin := range cabins {
 				seatRows, err := s.SeatRowRepo.GetSeatRowsByCabinID(cabin.ID)
 				if err != nil {
 					return nil, err
 				}
 
+				var seatRowsDTO []dtos.SeatRow
+
 				for _, seatRow := range seatRows {
 					seats, err := s.SeatRepo.GetSeatsBySeatRowIDAndSegmentID(seatRow.ID, segment.ID)
 					if err != nil {
 						return nil, err
 					}
+
+					var seatsDTO []dtos.Seat
 
 					for _, seat := range seats {
 						if seat.StorefrontSlotCode != constants.CONST_SEAT_STOREFRONT_SLOT_CODE_SEAT {
@@ -145,42 +151,42 @@ func (s *seatMapService) GetSeatMapBySeatsItineraryPartID(id int64) (*dtos.SeatM
 							seatsDTO = append(seatsDTO, dtos.Seat{
 								StorefrontSlotCode:  seat.StorefrontSlotCode,
 								Available:           seat.Available,
-								Code:                seat.Code,
+								Code:                *seat.Code,
 								Designations:        seat.Designations,
 								Entitled:            seat.Entitled,
 								FeeWaived:           seat.FeeWaived,
-								EntitledRuleId:      seat.EntitledRuleID,
-								FeeWaivedRuleId:     seat.FeeWaiveRuleID,
+								EntitledRuleId:      *seat.EntitledRuleID,
+								FeeWaivedRuleId:     *seat.FeeWaiveRuleID,
 								SeatCharacteristics: seat.SeatCharacteristics,
 								Limitations:         seat.Limitations,
-								RefundIndicator:     seat.RefundIndicator,
+								RefundIndicator:     *seat.RefundIndicator,
 								FreeOfCharge:        seat.FreeOfCharge,
-								Prices: dtos.Prices{
+								Prices: &dtos.Prices{
 									Alternatives: [][]dtos.Alternative{
 										{
 											{
-												Amount:   seat.PriceAmount,
-												Currency: seat.PriceCurrency,
+												Amount:   *seat.PriceAmount,
+												Currency: *seat.PriceCurrency,
 											},
 										},
 									},
 								},
-								Taxes: dtos.Taxes{
+								Taxes: &dtos.Taxes{
 									Alternatives: [][]dtos.Alternative{
 										{
 											{
-												Amount:   seat.TaxAmount,
-												Currency: seat.TaxCurrency,
+												Amount:   *seat.TaxAmount,
+												Currency: *seat.TaxCurrency,
 											},
 										},
 									},
 								},
-								Total: dtos.Total{
+								Total: &dtos.Total{
 									Alternatives: [][]dtos.Alternative{
 										{
 											{
-												Amount:   seat.TotalAmount,
-												Currency: seat.TotalCurrency,
+												Amount:   *seat.TotalAmount,
+												Currency: *seat.TotalCurrency,
 											},
 										},
 									},

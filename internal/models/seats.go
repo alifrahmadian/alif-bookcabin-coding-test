@@ -13,18 +13,18 @@ type Seat struct {
 	FeeWaived              bool     `json:"fee_waived"`
 	FreeOfCharge           bool     `json:"free_of_charge"`
 	OriginallySelected     bool     `json:"originally_selected"`
-	Code                   string   `json:"code"`
+	Code                   *string  `json:"code"`
 	Designations           []string `json:"designations"`
-	EntitledRuleID         int64    `json:"entitled_rule_id"`
-	FeeWaiveRuleID         int64    `json:"fee_waive_rule_id"`
+	EntitledRuleID         *int64   `json:"entitled_rule_id"`
+	FeeWaiveRuleID         *int64   `json:"fee_waive_rule_id"`
 	SeatCharacteristics    []string `json:"seat_characteristics"`
 	Limitations            []string `json:"limintations"`
-	RefundIndicator        string   `json:"refund_indicator"`
+	RefundIndicator        *string  `json:"refund_indicator"`
 	RawSeatCharacteristics []string `json:"raw_seat_characteristics"`
-	PriceAmount            float64  `json:"price_amount"`
-	PriceCurrency          string   `json:"price_currency"`
-	TaxAmount              float64  `json:"tax_amount"`
-	TaxCurrency            string   `json:"tax_currency"`
-	TotalAmount            float64  `json:"total_amount"`
-	TotalCurrency          string   `json:"total_currency"`
+	PriceAmount            *float64 `json:"price_amount"`
+	PriceCurrency          *string  `json:"price_currency"`
+	TaxAmount              *float64 `json:"tax_amount"`
+	TaxCurrency            *string  `json:"tax_currency"`
+	TotalAmount            *float64 `json:"total_amount"`
+	TotalCurrency          *string  `json:"total_currency"`
 }

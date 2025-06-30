@@ -4,6 +4,7 @@ import (
 	"database/sql"
 
 	"github.com/alifrahmadian/alif-bookcabin-coding-test/internal/models"
+	"github.com/lib/pq"
 )
 
 type SeatRepository interface {
@@ -66,7 +67,7 @@ func (r *seatRepository) GetSeatsBySeatRowIDAndSegmentID(seatRowID, segmentID in
 			&seat.ID,
 			&seat.SeatRowID,
 			&seat.SegmentID,
-			&seat.SlotCharacteristics,
+			pq.Array(&seat.SlotCharacteristics),
 			&seat.StorefrontSlotCode,
 			&seat.Available,
 			&seat.Entitled,
@@ -74,13 +75,13 @@ func (r *seatRepository) GetSeatsBySeatRowIDAndSegmentID(seatRowID, segmentID in
 			&seat.FreeOfCharge,
 			&seat.OriginallySelected,
 			&seat.Code,
-			&seat.Designations,
+			pq.Array(&seat.Designations),
 			&seat.EntitledRuleID,
 			&seat.FeeWaiveRuleID,
-			&seat.SeatCharacteristics,
-			&seat.Limitations,
+			pq.Array(&seat.SeatCharacteristics),
+			pq.Array(&seat.Limitations),
 			&seat.RefundIndicator,
-			&seat.RawSeatCharacteristics,
+			pq.Array(&seat.RawSeatCharacteristics),
 			&seat.PriceAmount,
 			&seat.PriceCurrency,
 			&seat.TaxAmount,
