@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { fetchSeatMap } from "../api/seatMapAPI";
+import SeatGrid from "./SeatGrid";
 
 const SeatMapView = ({ itineraryId }) => {
   const [data, setData] = useState(null);
@@ -24,8 +25,8 @@ const SeatMapView = ({ itineraryId }) => {
 
   return (
     <div>
-      <h2>Seat Map</h2>
-      <p>{JSON.stringify(data, null, 2)}</p>
+      <p>Seat View</p>
+      <SeatGrid seatMapData={data} />
     </div>
   );
 };
