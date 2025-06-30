@@ -44,7 +44,7 @@ const SeatMapView = ({ itineraryId }) => {
         <SegmentDetails segment={segment} />
       </div>
       <div style={{ flex: 2 }}>
-        <h2>Seat View</h2>
+        <h2 style={{ textAlign: "center" }}>Seat View</h2>
         <SeatGrid seatMapData={data} />
       </div>
       <div style={{ flex: 1 }}>
