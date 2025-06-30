@@ -1,0 +1,3 @@
+ALTER TABLE segments
+  ALTER COLUMN departure TYPE TIMESTAMP WITHOUT TIME ZONE USING departure::timestamp,
+  ALTER COLUMN arrival TYPE TIMESTAMP WITHOUT TIME ZONE USING arrival::timestamp;
